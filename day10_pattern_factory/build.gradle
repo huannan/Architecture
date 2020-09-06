@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.nan.day09_pattern_builder"
+        applicationId "com.nan.day10_pattern_factory"
         minSdkVersion 15
         targetSdkVersion 29
         versionCode 1
@@ -29,5 +29,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
 }

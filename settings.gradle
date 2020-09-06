@@ -1,3 +1,4 @@
+include ':day10_pattern_factory'
 include ':day09_pattern_builder'
 include ':day08_pattern_singleton'
 include ':day07_handler'
