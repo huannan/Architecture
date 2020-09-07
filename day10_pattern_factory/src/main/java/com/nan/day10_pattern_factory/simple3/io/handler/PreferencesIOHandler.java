@@ -1,10 +1,15 @@
 package com.nan.day10_pattern_factory.simple3.io.handler;
 
+import com.nan.day10_pattern_factory.simple2.PreferencesUtils;
+
 public class PreferencesIOHandler implements IOHandler {
+
+    private PreferencesUtils mPreferencesUtils = PreferencesUtils.getInstance();
 
     @Override
     public void save(String key, String value) {
-
+        mPreferencesUtils.putString(key, value)
+                .commit();
     }
 
     @Override
@@ -14,7 +19,8 @@ public class PreferencesIOHandler implements IOHandler {
 
     @Override
     public void save(String key, int value) {
-
+        mPreferencesUtils.putInt(key, value)
+                .commit();
     }
 
     @Override
@@ -34,7 +40,7 @@ public class PreferencesIOHandler implements IOHandler {
 
     @Override
     public String getString(String key) {
-        return null;
+        return mPreferencesUtils.getString(key, null);
     }
 
     @Override
@@ -44,7 +50,7 @@ public class PreferencesIOHandler implements IOHandler {
 
     @Override
     public int getInt(String key, int defaultValue) {
-        return 0;
+        return mPreferencesUtils.getInt(key, defaultValue);
     }
 
     @Override

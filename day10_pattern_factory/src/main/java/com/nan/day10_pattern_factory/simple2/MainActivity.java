@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 问题分析：
         // 清理缓存的功能，某些需要清理，某些不需要清理；或者为了保证性能，采取内存/数据库等其他方式存储
         PreferencesUtils.getInstance()
-                .putString("name", "huannan1")
+                .putString("name", "huannan2")
                 .putInt("age", 28)
                 .commit();
     }

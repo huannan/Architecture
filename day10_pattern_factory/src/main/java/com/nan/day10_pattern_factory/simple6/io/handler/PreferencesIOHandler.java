@@ -1,4 +1,4 @@
-package com.nan.day10_pattern_factory.simple4.io.handler;
+package com.nan.day10_pattern_factory.simple6.io.handler;
 
 import com.nan.day10_pattern_factory.simple2.PreferencesUtils;
 

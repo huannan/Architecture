@@ -1,15 +1,15 @@
-package com.nan.day10_pattern_factory.simple4.io.handler;
+package com.nan.day10_pattern_factory.simple6.io.handler;
 
-import com.nan.day10_pattern_factory.simple2.PreferencesUtils;
+import android.support.v4.util.LruCache;
 
-public class PreferencesIOHandler implements IOHandler {
+public class MemoryIOHandler implements IOHandler {
 
-    private PreferencesUtils mPreferencesUtils = PreferencesUtils.getInstance();
+    //最好的APP运行大小的八分之一
+    private static LruCache<String, Object> mCache = new LruCache<>(10 * 1024 * 1024);
 
     @Override
     public void save(String key, String value) {
-        mPreferencesUtils.putString(key, value)
-                .commit();
+        mCache.put(key, value);
     }
 
     @Override
@@ -19,8 +19,7 @@ public class PreferencesIOHandler implements IOHandler {
 
     @Override
     public void save(String key, int value) {
-        mPreferencesUtils.putInt(key, value)
-                .commit();
+
     }
 
     @Override
@@ -40,7 +39,7 @@ public class PreferencesIOHandler implements IOHandler {
 
     @Override
     public String getString(String key) {
-        return mPreferencesUtils.getString(key, null);
+        return (String) mCache.get(key);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class PreferencesIOHandler implements IOHandler {
 
     @Override
     public int getInt(String key, int defaultValue) {
-        return mPreferencesUtils.getInt(key, defaultValue);
+        return 0;
     }
 
     @Override

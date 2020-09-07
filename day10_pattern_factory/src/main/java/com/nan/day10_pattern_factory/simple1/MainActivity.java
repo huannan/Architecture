@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         getSharedPreferences("cache", Context.MODE_PRIVATE)
                 .edit()
-                .putString("name", "huannan")
+                .putString("name", "huannan1")
                 .putInt("age", 28)
                 .commit();
     }

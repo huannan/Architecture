@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTv.setOnClickListener(this);
 
         IOHandler ioHandler = IOHandlerFactory.createIOHandler(IOHandlerFactory.IOType.MEMORY);
-        ioHandler.save("name", "huannan2");
+        ioHandler.save("name", "huannan3");
         ioHandler.save("age", 28);
     }
 
