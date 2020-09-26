@@ -1,3 +1,4 @@
+include ':day12_pattern_template'
 include ':day11_pattern_decorator'
 include ':day10_pattern_factory'
 include ':day09_pattern_builder'
