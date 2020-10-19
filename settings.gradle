@@ -1,3 +1,4 @@
+include ':day13_pattern_strategy'
 include ':day12_pattern_template'
 include ':day11_pattern_decorator'
 include ':day10_pattern_factory'
