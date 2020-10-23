@@ -1,4 +1,4 @@
-package com.nan.day14_pattern_adapter.simple2;
+package com.nan.day14_pattern_adapter.simple3;
 
 /**
  * 需要适配的目标接口
