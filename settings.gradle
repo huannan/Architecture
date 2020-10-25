@@ -1,3 +1,4 @@
+include ':day15_pattern_observer'
 include ':day14_pattern_adapter'
 include ':day13_pattern_strategy'
 include ':day12_pattern_template'
