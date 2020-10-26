@@ -3,10 +3,8 @@ package com.nan.day15_pattern_observer.simple3.observable;
 import java.util.Observable;
 
 /**
- * Created by hcDarren on 2017/10/14.
  * 微信公众号 - Android进阶之旅公众号
  */
-
 public class WXAdvanceObservable extends Observable {
     private String article;
 

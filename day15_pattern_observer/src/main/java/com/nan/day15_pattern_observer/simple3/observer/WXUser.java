@@ -1,15 +1,13 @@
 package com.nan.day15_pattern_observer.simple3.observer;
 
-import com.darren.architect_day_15.simple3.observable.WXAdvanceObservable;
+import com.nan.day15_pattern_observer.simple3.observable.WXAdvanceObservable;
 
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by hcDarren on 2017/10/14.
  * 微信公众号 - 具体订阅用户（Darren，高岩）
  */
-
 public class WXUser implements Observer {
 
     private String name;

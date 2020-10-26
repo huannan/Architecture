@@ -1,14 +1,10 @@
 package com.nan.day15_pattern_observer.simple3;
 
-import com.darren.architect_day_15.simple3.observable.WXAdvanceObservable;
-import com.darren.architect_day_15.simple3.observer.WXUser;
-
-/**
- * Created by hcDarren on 2017/10/14.
- */
+import com.nan.day15_pattern_observer.simple3.observable.WXAdvanceObservable;
+import com.nan.day15_pattern_observer.simple3.observer.WXUser;
 
 public class Client {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         // 微信公众号 - 具体的被观察者 - Android进阶之旅
         WXAdvanceObservable wxAdvanceObservable = new WXAdvanceObservable();
 
