@@ -21,6 +21,11 @@ public class WXUserSystem implements Aggregate<UserInfo> {
         return userInfos;
     }
 
+    /**
+     * 只提供迭代方法，不暴露具体实现
+     *
+     * @return
+     */
     @Override
     public Iterator<UserInfo> iterator() {
         return new WXIterator(userInfos);
