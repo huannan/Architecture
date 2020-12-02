@@ -1,3 +1,4 @@
+include ':day20_pattern_facade'
 include ':day19_pattern_chain_of_responsibility'
 include ':day18_pattern_iterator'
 include ':day17_pattern_prototype'
