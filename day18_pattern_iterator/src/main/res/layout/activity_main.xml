@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.flyme.videoclips.day18_pattern_iterator.simple3.bottomtab.TabBottomNavigation
+    <com.nan.day18_pattern_iterator.simple3.bottomtab.TabBottomNavigation
         android:id="@+id/tab_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
