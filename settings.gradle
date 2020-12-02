@@ -1,3 +1,5 @@
+include ':day24_pattern_state'
+include ':day23_pattern_composite'
 include ':day22_pattern_command'
 include ':day21_pattern_flyweight'
 include ':day20_pattern_facade'
