@@ -1,3 +1,6 @@
+include ':day29_pattern_interpreter'
+include ':day28_pattern_memento'
+include ':day27_pattern_visitor'
 include ':day26_pattern_mediator'
 include ':day25_pattern_bridge'
 include ':day24_pattern_state'
