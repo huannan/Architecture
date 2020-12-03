@@ -1,4 +1,4 @@
-package com.nan.day22_pattern_command.simple2;
+package com.nan.day22_pattern_command.simple1;
 
 public class LeftCommand implements Command {
     private TetrisMachine machine;
