@@ -18,5 +18,6 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater.from(this).inflate(-1, null);
         EventBus.getDefault().register(this);
         EventBus.getDefault().post(null);
+        EventBus.getDefault().unregister(this);
     }
 }
