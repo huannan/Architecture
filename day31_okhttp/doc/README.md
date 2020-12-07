@@ -115,5 +115,88 @@ Socket 连接 
 原版博客：官方介绍文档 （基础）+ 项目实践验证 + 自己阅读源码 
 根据如何使用的主线来阅读源码
 
+主线（重点是第三步）：
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+// 1. 构建一个请求，url、端口、请求头等一些参数
+// 内部添加处理了很多参数，例如表单提交，内部已经帮我们添加了content-type、content-length等
+Request request = new Request.Builder()
+        .url("https://www.baidu.com")
+        .get()
+        .build();
+
+// 2. 把Request封装转成一个RealCall
+Call call = client.newCall(request);
+
+// 3. 加入到线程池里面执行（重点分析）
+call.enqueue(new Callback() {
+    @Override
+    public void onFailure(Call call, IOException e) {
+        Log.e(TAG, "请求失败");
+    }
+
+    @Override
+    public void onResponse(Call call, Response response) throws IOException {
+        ResponseBody body = response.body();
+        if (null == body) {
+            return;
+        }
+        Log.e(TAG, String.format("返回状态码：%d", response.code()));
+        Log.e(TAG, String.format("返回结果：%s", body.string()));
+    }
+});
+```
+
 RealCall 里面的 enqueue
-AsyncCall 是 RealCall 的内部类，给了 OKhttp 的 Dispatcher
+AsyncCall 是 RealCall 的内部类，给了 OKHttp 的 Dispatcher：
+
+```java
+  synchronized void enqueue(AsyncCall call) {
+    // 判断当前正在执行的任务数量，最大是 64 ，正在执行的任务中的 host , 最大是 5
+    if (runningAsyncCalls.size() < maxRequests && runningCallsForHost(call) < maxRequestsPerHost) {
+      // 加入到正在执行
+      runningAsyncCalls.add(call);
+      // 扔到线程池，最终去了AsyncCall.execute()方法
+      executorService().execute(call);
+    } else {
+      // 加入准备执行的集合，等待执行
+      readyAsyncCalls.add(call);
+    }
+  }
+```
+
+需要重点分析getResponseWithInterceptorChain()方法，返回Response：
+责任链设计模式：重试、重定向等等
+
+```java
+    @Override protected void execute() {
+      boolean signalledCallback = false;
+      try {
+        // 这里面才是重点
+        Response response = getResponseWithInterceptorChain();
+        if (retryAndFollowUpInterceptor.isCanceled()) {
+          signalledCallback = true;
+          responseCallback.onFailure(RealCall.this, new IOException("Canceled"));
+        } else {
+          signalledCallback = true;
+          responseCallback.onResponse(RealCall.this, response);
+        }
+      } catch (IOException e) {
+        if (signalledCallback) {
+          // Do not signal the callback twice!
+          Platform.get().log(INFO, "Callback failure for " + toLoggableString(), e);
+        } else {
+          eventListener.callFailed(RealCall.this, e);
+          responseCallback.onFailure(RealCall.this, e);
+        }
+      } finally {
+        client.dispatcher().finished(this);
+      }
+    }
+  }
+```
+
+1. 多站在不同角度思考问题，想办法去赚钱
+2. 多接触一些人

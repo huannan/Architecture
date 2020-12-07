@@ -23,11 +23,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         OkHttpClient client = new OkHttpClient();
+
+        // 1. 构建一个请求，url、端口、请求头等一些参数
+        // 内部添加处理了很多参数，例如表单提交，内部已经帮我们添加了content-type、content-length等
         Request request = new Request.Builder()
                 .url("https://www.baidu.com")
                 .get()
                 .build();
+
+        // 2. 把Request封装转成一个RealCall
         Call call = client.newCall(request);
+
+        // 3. 加入到线程池里面执行（重点分析）
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
