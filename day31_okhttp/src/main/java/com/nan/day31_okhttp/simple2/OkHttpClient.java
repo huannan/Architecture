@@ -24,7 +24,7 @@ public class OkHttpClient {
 
         // 线程池处理
         Dispatcher dispatcher;
-        // 此处还有很多其他参数，链接超时、https证书相关的参数、拦截器
+        // 此处还有很多其他参数，连接超时、https证书相关的参数、拦截器
 
         public Builder() {
             this.dispatcher = new Dispatcher();

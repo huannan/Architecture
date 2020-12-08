@@ -149,6 +149,8 @@ public final class CacheStrategy {
         for (int i = 0, size = headers.size(); i < size; i++) {
           String fieldName = headers.name(i);
           String value = headers.value(i);
+          // 解析之前缓存好的头信息
+          // Expires缓存的过期时间、Last-Modified上次的更新时间
           if ("Date".equalsIgnoreCase(fieldName)) {
             servedDate = HttpDate.parse(value);
             servedDateString = value;
@@ -172,6 +174,7 @@ public final class CacheStrategy {
     public CacheStrategy get() {
       CacheStrategy candidate = getCandidate();
 
+      // 只能从缓存里面获取，如果onlyIfCached，都设置为null
       if (candidate.networkRequest != null && request.cacheControl().onlyIfCached()) {
         // We're forbidden from using the network and the cache is insufficient.
         return new CacheStrategy(null, null);
@@ -192,6 +195,7 @@ public final class CacheStrategy {
         return new CacheStrategy(request, null);
       }
 
+      // 判断一下要不要缓存，即缓存策略
       // If this response shouldn't have been stored, it should never be used
       // as a response source. This check should be redundant as long as the
       // persistence store is well-behaved and the rules are constant.
@@ -209,6 +213,7 @@ public final class CacheStrategy {
         return new CacheStrategy(null, cacheResponse);
       }
 
+      // 计算缓存过期时间
       long ageMillis = cacheResponseAge();
       long freshMillis = computeFreshnessLifetime();
 
@@ -235,9 +240,13 @@ public final class CacheStrategy {
         if (ageMillis > oneDayMillis && isFreshnessLifetimeHeuristic()) {
           builder.addHeader("Warning", "113 HttpURLConnection \"Heuristic expiration\"");
         }
+        // 如果缓存没有过期并且需要缓存，那么返回Response
         return new CacheStrategy(null, builder.build());
       }
 
+      // 本地有缓存并且缓存已经过期，那么需要把上一次的请求头的一些字段带去
+      // 请求->返回(带一个更新时间)
+      // 请求(带一个更新时间)->服务器比对，返回
       // Find a condition to add to the request. If the condition is satisfied, the response body
       // will not be transmitted.
       String conditionName;

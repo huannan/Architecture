@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -51,6 +52,7 @@ public class CallServerInterceptor implements Interceptor {
         int statusCode = urlConnection.getResponseCode();
         // 进行一些列操作，状态码 200
         if (statusCode == 200) {
+            // 如果后台返回的数据被gzip压缩过，那么需要使用GZIPInputStream来读
             InputStream inputStream = urlConnection.getInputStream();
             Response response = new Response(statusCode, new ResponseBody(inputStream));
             return response;

@@ -48,6 +48,7 @@ public final class BridgeInterceptor implements Interceptor {
     Request userRequest = chain.request();
     Request.Builder requestBuilder = userRequest.newBuilder();
 
+    // 补充头信息
     RequestBody body = userRequest.body();
     if (body != null) {
       MediaType contentType = body.contentType();
@@ -69,6 +70,8 @@ public final class BridgeInterceptor implements Interceptor {
       requestBuilder.header("Host", hostHeader(userRequest.url(), false));
     }
 
+    // 这个头信息是必须的，但是调用方不一定会添加
+    // 参考 https://blog.csdn.net/xiaoduanayu/article/details/78386508
     if (userRequest.header("Connection") == null) {
       requestBuilder.header("Connection", "Keep-Alive");
     }
@@ -81,6 +84,7 @@ public final class BridgeInterceptor implements Interceptor {
       requestBuilder.header("Accept-Encoding", "gzip");
     }
 
+    // Cookie
     List<Cookie> cookies = cookieJar.loadForRequest(userRequest.url());
     if (!cookies.isEmpty()) {
       requestBuilder.header("Cookie", cookieHeader(cookies));
@@ -90,13 +94,16 @@ public final class BridgeInterceptor implements Interceptor {
       requestBuilder.header("User-Agent", Version.userAgent());
     }
 
+    // 给下一个拦截器处理
     Response networkResponse = chain.proceed(requestBuilder.build());
 
+    // 保存Cookie等信息
     HttpHeaders.receiveHeaders(cookieJar, userRequest.url(), networkResponse.headers());
 
     Response.Builder responseBuilder = networkResponse.newBuilder()
         .request(userRequest);
 
+    // 如果后台返回的数据用gzip压缩了，那么需要解压缩
     if (transparentGzip
         && "gzip".equalsIgnoreCase(networkResponse.header("Content-Encoding"))
         && HttpHeaders.hasBody(networkResponse)) {

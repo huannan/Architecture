@@ -8,6 +8,7 @@ import com.nan.day31_okhttp.R;
 
 import java.io.IOException;
 
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -26,10 +27,14 @@ public class Main1Activity extends AppCompatActivity {
 
         OkHttpClient client = new OkHttpClient();
 
+        // 由于新版本Android的限制，需要配置android:usesCleartextTraffic="true"
+        // https://blog.csdn.net/qq_2300688967/article/details/81114201
+
         // 1. 构建一个请求，url、端口、请求头等一些参数
         // 内部添加处理了很多参数，例如表单提交，内部已经帮我们添加了content-type、content-length等
         Request request = new Request.Builder()
-                .url("https://www.baidu.com")
+                .url("http://www.baidu.com")
+                // .cacheControl(new CacheControl.Builder().onlyIfCached().build())
                 .get()
                 .build();
 

@@ -103,16 +103,19 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
   }
 
   @Override public Response intercept(Chain chain) throws IOException {
+    // 拿到Request对象
     Request request = chain.request();
     RealInterceptorChain realChain = (RealInterceptorChain) chain;
     Call call = realChain.call();
     EventListener eventListener = realChain.eventListener();
 
+    // 创建StreamAllocation并且通过realChain.proceed()给下一个拦截器处理
     streamAllocation = new StreamAllocation(client.connectionPool(), createAddress(request.url()),
         call, eventListener, callStackTrace);
 
     int followUpCount = 0;
     Response priorResponse = null;
+    // 死循环不断重试，直到return response或者throw新的Exception
     while (true) {
       if (canceled) {
         streamAllocation.release();
@@ -122,16 +125,20 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
       Response response;
       boolean releaseConnection = true;
       try {
+        // 这个方法可能会异常，一旦异常再次被抛出去那么就会回调onFailure()
         response = realChain.proceed(request, streamAllocation, null, null);
         releaseConnection = false;
       } catch (RouteException e) {
+        // 处理RouteException
         // The attempt to connect via a route failed. The request will not have been sent.
+        // 如果是致命的异常，直接抛出去
         if (!recover(e.getLastConnectException(), false, request)) {
           throw e.getLastConnectException();
         }
         releaseConnection = false;
         continue;
       } catch (IOException e) {
+        // 处理IOException
         // An attempt to communicate with a server failed. The request may have been sent.
         boolean requestSendStarted = !(e instanceof ConnectionShutdownException);
         if (!recover(e, requestSendStarted, request)) throw e;
@@ -154,8 +161,11 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
             .build();
       }
 
+      // 从下面传过来的Response，但是不能直接返回给客户端
+      // 例如可能会有重定向等需要处理：307需要从头部的Location里面获取新的连接重新请求
       Request followUp = followUpRequest(response);
 
+      // 如果返回null，直接会返回给上一级即回调onResponse
       if (followUp == null) {
         if (!forWebSocket) {
           streamAllocation.release();
@@ -165,6 +175,7 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
 
       closeQuietly(response.body());
 
+      // 判断是否超过重定向的最大次数
       if (++followUpCount > MAX_FOLLOW_UPS) {
         streamAllocation.release();
         throw new ProtocolException("Too many follow-up requests: " + followUpCount);
@@ -184,6 +195,7 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
             + " didn't close its backing stream. Bad interceptor?");
       }
 
+      // 请求变成重试的请求，然后继续循环
       request = followUp;
       priorResponse = response;
     }
@@ -219,6 +231,7 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
     // We can't send the request body again.
     if (requestSendStarted && userRequest.body() instanceof UnrepeatableRequestBody) return false;
 
+    // 是不是致命异常
     // This exception is fatal.
     if (!isRecoverable(e, requestSendStarted)) return false;
 
@@ -238,6 +251,7 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
     // If there was an interruption don't recover, but if there was a timeout connecting to a route
     // we should try the next route (if there is one).
     if (e instanceof InterruptedIOException) {
+      // 是不是Socket超时
       return e instanceof SocketTimeoutException && !requestSendStarted;
     }
 
@@ -275,6 +289,7 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
     int responseCode = userResponse.code();
 
     final String method = userResponse.request().method();
+    // 判断状态码
     switch (responseCode) {
       case HTTP_PROXY_AUTH:
         Proxy selectedProxy = route != null
@@ -303,8 +318,10 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
         // Does the client allow redirects?
         if (!client.followRedirects()) return null;
 
+        // 从头部信息里面获取Location
         String location = userResponse.header("Location");
         if (location == null) return null;
+        // 生成一个新的HttpUrl
         HttpUrl url = userResponse.request().url().resolve(location);
 
         // Don't follow redirects to unsupported protocols.
@@ -359,6 +376,7 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
           return null;
         }
 
+        // 返回一个新的连接的Request
         return userResponse.request();
 
       default:

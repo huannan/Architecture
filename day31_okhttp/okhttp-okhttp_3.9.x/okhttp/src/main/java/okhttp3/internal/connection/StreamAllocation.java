@@ -110,8 +110,10 @@ public final class StreamAllocation {
     boolean connectionRetryEnabled = client.retryOnConnectionFailure();
 
     try {
+      // 找到一个健康的连接
       RealConnection resultConnection = findHealthyConnection(connectTimeout, readTimeout,
           writeTimeout, connectionRetryEnabled, doExtensiveHealthChecks);
+      // 创建了HttpCodec，实际上封装了输入输出流(okio)，本质上就是操作Socket的输入输出流
       HttpCodec resultCodec = resultConnection.newCodec(client, chain, this);
 
       synchronized (connectionPool) {
@@ -201,6 +203,7 @@ public final class StreamAllocation {
     if (foundPooledConnection) {
       eventListener.connectionAcquired(call, result);
     }
+    // 返回
     if (result != null) {
       // If we found an already-allocated or pooled connection, we're done.
       return result;
@@ -232,6 +235,7 @@ public final class StreamAllocation {
         }
       }
 
+      // 没有找到可用的连接，直接创建一个
       if (!foundPooledConnection) {
         if (selectedRoute == null) {
           selectedRoute = routeSelection.next();
@@ -252,6 +256,7 @@ public final class StreamAllocation {
       return result;
     }
 
+    // 通过connect真正去建立连接
     // Do TCP + TLS handshakes. This is a blocking operation.
     result.connect(
         connectTimeout, readTimeout, writeTimeout, connectionRetryEnabled, call, eventListener);

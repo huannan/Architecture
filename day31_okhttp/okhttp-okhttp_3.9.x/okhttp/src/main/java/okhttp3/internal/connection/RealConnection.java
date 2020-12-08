@@ -149,12 +149,14 @@ public final class RealConnection extends Http2Connection.Listener implements Co
     while (true) {
       try {
         if (route.requiresTunnel()) {
+          // 隧道相关
           connectTunnel(connectTimeout, readTimeout, writeTimeout, call, eventListener);
           if (rawSocket == null) {
             // We were unable to connect the tunnel but properly closed down our resources.
             break;
           }
         } else {
+          // 建立socket连接
           connectSocket(connectTimeout, readTimeout, call, eventListener);
         }
         establishProtocol(connectionSpecSelector, call, eventListener);
@@ -235,6 +237,7 @@ public final class RealConnection extends Http2Connection.Listener implements Co
     eventListener.connectStart(call, route.socketAddress(), proxy);
     rawSocket.setSoTimeout(readTimeout);
     try {
+      // Socket连接
       Platform.get().connectSocket(rawSocket, route.socketAddress(), connectTimeout);
     } catch (ConnectException e) {
       ConnectException ce = new ConnectException("Failed to connect to " + route.socketAddress());
@@ -247,6 +250,7 @@ public final class RealConnection extends Http2Connection.Listener implements Co
     // https://github.com/square/okhttp/issues/3245
     // https://android-review.googlesource.com/#/c/271775/
     try {
+      // 这里绑定了Socket的输入输出流
       source = Okio.buffer(Okio.source(rawSocket));
       sink = Okio.buffer(Okio.sink(rawSocket));
     } catch (NullPointerException npe) {
@@ -470,6 +474,7 @@ public final class RealConnection extends Http2Connection.Listener implements Co
     if (http2Connection != null) {
       return new Http2Codec(client, chain, streamAllocation, http2Connection);
     } else {
+      // okio：基于Java原生输入输出流，涉及的类太多了，自己封装类Source和Sink，以及两个对应的BufferXXX实现
       socket.setSoTimeout(chain.readTimeoutMillis());
       source.timeout().timeout(chain.readTimeoutMillis(), MILLISECONDS);
       sink.timeout().timeout(chain.writeTimeoutMillis(), MILLISECONDS);
