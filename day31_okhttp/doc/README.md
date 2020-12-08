@@ -200,3 +200,60 @@ AsyncCall 是 RealCall 的内部类，给了 OKHttp 的 Dispatcher：
 
 1. 多站在不同角度思考问题，想办法去赚钱
 2. 多接触一些人
+
+### 网络编程基础3-表单提交
+
+post提交表单格式：
+startBoundary + "\r\n"
+Content-Dispsotion: form-data; name = "pageSize"
+Context-Type: text/palint
+
+1
+startBoundary + "\r\n"
+Content-Dispsotion: form-data; name = "pageNo"
+Context-Type: text/palint
+
+1
+endBoundary
+
+post文件提交（上传）格式：
+startBoundary + "\r\n"
+Content-Dispsotion: form-data; name = "file"; filename="test.png" 
+Context-Type: (文件的type) 
+
+文件的内容流
+startBoundary + "\r\n"
+Content-Dispsotion: form-data; name = "file"; filename="test.png" 
+Context-Type: (文件的type) 
+
+文件的内容流
+
+总结：表单提交需要严格按照格式来，很多细节OkHttp已经帮我们处理了
+
+### OkHttp拦截器
+
+拦截器作用：
+
+getResponseWithInterceptorChain() 请求Request -> Response
+
+```java
+  Response getResponseWithInterceptorChain() throws IOException {
+    // Build a full stack of interceptors.
+    // 拦截器的一个集合
+    List<Interceptor> interceptors = new ArrayList<>();
+    // 客户端的所有自定义拦截器
+    interceptors.addAll(client.interceptors());// 自己的
+    // OKhttp 5 个拦截器 ，责任链设计模式，每一个拦截器只处理与他相关的部分 volley
+    interceptors.add(retryAndFollowUpInterceptor);// 重试
+    interceptors.add(new BridgeInterceptor(client.cookieJar()));// 基础
+    interceptors.add(new CacheInterceptor(client.internalCache()));// 缓存
+    interceptors.add(new ConnectInterceptor(client));// 建立连接
+    interceptors.add(new CallServerInterceptor(forWebSocket));// 写数据
+
+    Interceptor.Chain chain = new RealInterceptorChain(interceptors, null, null, null, 0,
+        originalRequest, this, eventListener, client.connectTimeoutMillis(),
+        client.readTimeoutMillis(), client.writeTimeoutMillis());
+
+    return chain.proceed(originalRequest);
+  }
+```

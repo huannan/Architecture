@@ -28,7 +28,7 @@ public class Main2Activity extends AppCompatActivity {
 
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
+            public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "请求失败");
             }
 

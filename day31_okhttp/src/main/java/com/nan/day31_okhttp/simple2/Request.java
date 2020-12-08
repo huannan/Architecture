@@ -8,20 +8,44 @@ import java.util.Map;
  */
 public class Request {
 
-    private final String url;
+    final String url;
     // 请求方法
     @Method
-    private final String method;
+    final String method;
     // 请求体
-    private final RequestBody body;
+    final RequestBody body;
     // 请求头，注意实际上一个key要对应多个value
-    private final Map<String, String> headers;
+    final Map<String, String> headers;
 
     private Request(Builder builder) {
         this.url = builder.url;
         this.method = builder.method;
         this.body = builder.body;
         this.headers = builder.headers;
+    }
+
+    public boolean doOutput() {
+        return Method.POST.equals(method) || Method.PUT.equals(method);
+    }
+
+    public String url() {
+        return url;
+    }
+
+    public String method() {
+        return method;
+    }
+
+    public RequestBody body() {
+        return body;
+    }
+
+    public Map<String, String> headers() {
+        return headers;
+    }
+
+    public void addHeader(String key, String value) {
+        headers.put(key, value);
     }
 
     public static class Builder {
