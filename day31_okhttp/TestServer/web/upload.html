@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传，支持图片的预览，多个图片上传等功能</title>
+    <script type="text/javascript">
+        var no = 1;
+        //要显示图片的img的id必须showimg开头
+        //预览上传的图片
+        function preview(obj, id) {
+            //判断是否支持FileReader
+            if (window.FileReader) {
+                var reader = new FileReader();
+            } else {
+                alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+            }
+
+            //获取文件
+            var file = obj.files[0];
+            var imageType = /^image\//;
+            //是否是图片
+            if (!imageType.test(file.type)) {
+                alert("请选择图片！");
+                //return;
+            }
+            //读取完成
+            reader.onload = function (e) {
+                //获取图片dom
+                var img = document.getElementById("previewImg" + id);
+                //图片路径设置为读取的图片
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        //新增file标签
+        function addFile(dv_id) {
+            no++;
+            //var d=document.getElementById("dv_files");
+            var d = document.getElementById(dv_id);
+            var c = document.createElement("input");
+            c.setAttribute("type", "file");
+            c.setAttribute("name", "fn" + no);
+            c.setAttribute("onchange", "preview(this," + no + ")");
+            d.appendChild(c);
+            var img = document.createElement("img");
+            img.setAttribute("id", "previewImg" + no);
+            d.appendChild(img);
+            var b = document.createElement("br");
+            d.appendChild(b);
+        }
+    </script>
+    <style type="text/css">
+        img {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <form action="/TestServer/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="fn" onchange="preview(this,1)"/><img id="previewImg1"/>
+        <br/>
+        <div id="dv_files">
+        </div>
+        <input type="button" value="继续添加" onclick="addFile('dv_files')"/><br/>
+        <input type="submit" value="上传"/>
+    </form>
+</div>
+</body>
+</html>

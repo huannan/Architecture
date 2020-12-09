@@ -25,5 +25,5 @@ public abstract class BaseJsonServlet extends BaseServlet {
         writer.close();
     }
 
-    protected abstract ResponseEntity onHandle(HttpServletRequest req, HttpServletResponse resp);
+    protected abstract ResponseEntity onHandle(HttpServletRequest req, HttpServletResponse resp) throws Exception;
 }

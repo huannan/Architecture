@@ -9,4 +9,6 @@ public @interface ResponseCode {
     String SERVER_ERROR = "0001";
     String LOGIN_ERROR = "0002";
     String COMMENT_ERROR = "0003";
+    String UPLOAD_FAILED = "0004";
+    String UPLOAD_SUCCESS = "0005";
 }

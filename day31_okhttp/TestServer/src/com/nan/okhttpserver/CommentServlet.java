@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * http://localhost:8080/OkHttpServer/comment
+ * http://localhost:8080/TestServer/comment
  */
 @WebServlet("/comment")
 public class CommentServlet extends BaseJsonServlet {
     @Override
-    protected ResponseEntity onHandle(HttpServletRequest req, HttpServletResponse resp) {
+    protected ResponseEntity onHandle(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         ResponseEntity responseEntity = new ResponseEntity();
         responseEntity.code = ResponseCode.COMMENT_ERROR;
         responseEntity.msg = "评论失败，请重新登录";

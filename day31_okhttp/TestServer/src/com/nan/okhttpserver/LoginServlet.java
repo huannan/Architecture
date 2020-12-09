@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * http://localhost:8080/OkHttpServer/login?name=huannan&pwd=123456
+ * http://localhost:8080/TestServer/login?name=huannan&pwd=123456
  */
 @WebServlet("/login")
 public class LoginServlet extends BaseJsonServlet {
     @Override
-    protected ResponseEntity onHandle(HttpServletRequest req, HttpServletResponse resp) {
+    protected ResponseEntity onHandle(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         ResponseEntity responseEntity = new ResponseEntity();
         responseEntity.code = ResponseCode.LOGIN_ERROR;
         responseEntity.msg = "用户名或者密码错误";
