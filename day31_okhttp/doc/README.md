@@ -306,3 +306,12 @@ StreamAllocation: 找一些连接，做一下封装
 
     文件上传的具体一些细节（源码：BridgeInterceptor和CallServerInterceptor）
     静态代理的设计模式
+
+### 自定义缓存策略
+
+要求: 有网 30s 内请求读缓存，无网直接读缓存
+
+解决问题:
+
+1. 熟悉HTTP协议和CacheInterceptor源码
+2. 熟悉拦截器的工作流程

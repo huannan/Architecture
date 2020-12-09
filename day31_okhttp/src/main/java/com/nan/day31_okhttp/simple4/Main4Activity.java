@@ -56,15 +56,15 @@ public class Main4Activity extends AppCompatActivity {
             Cache cache = new Cache(getExternalCacheDir(), 10 * 1024 * 1024);
             mClient = new OkHttpClient.Builder()
                     .cache(cache)
-                    // 加在最前面
-                    // .addInterceptor()
-                    // 加在最比较靠后
+                    // 无网络的情况下只读缓存
+                     .addInterceptor(new CacheRequestInterceptor())
+                    // 自定义缓存,30秒内有效
                     .addNetworkInterceptor(new CacheResponseInterceptor())
                     .build();
         }
 
         Request request = new Request.Builder()
-                .url("http://172.16.47.80:8080/TestServer/login?name=huannan&pwd=123456")
+                .url("https://www.baidu.com")
                 .get()
                 .build();
         Call call = mClient.newCall(request);
