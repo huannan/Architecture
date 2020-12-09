@@ -10,12 +10,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 
-//使用MultipartConfig注解标注改servlet能够接受文件上传的请求
+/**
+ * 使用MultipartConfig注解标注改servlet能够接受文件上传的请求
+ * https://blog.csdn.net/xingfei_work/article/details/72683131
+ */
 @MultipartConfig
 @WebServlet("/upload")
 public class UpLoadServlet extends BaseJsonServlet {
@@ -28,12 +34,19 @@ public class UpLoadServlet extends BaseJsonServlet {
         // 获取request的所有的请求参数(将请求参数转换为Part)
         Collection<Part> list = req.getParts();
         for (Part p : list) {
-            // 获取上传的文件名称
-            String filename = p.getSubmittedFileName();
-            // 创建要保存的文件对象
-            File file = new File(createDir(getServletContext()), createName(filename));
-            // 保存文件
-            p.write(file.getAbsolutePath());
+            if ("file".equals(p.getName())) {
+                // 获取上传的文件名称
+                String filename = p.getSubmittedFileName();
+                // 创建要保存的文件对象
+                File file = new File(createDir(getServletContext()), createName(filename));
+                // 保存文件
+                p.write(file.getAbsolutePath());
+            } else if ("os".equals(p.getName())) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String os = reader.readLine();
+                reader.close();
+                responseEntity.msg = "文件上传成功，操作系统是：" + os;
+            }
         }
 
         return responseEntity;
