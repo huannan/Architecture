@@ -16,6 +16,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+/**
+ * OkHttp基本使用
+ */
 public class Main1Activity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";

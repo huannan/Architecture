@@ -8,6 +8,9 @@ import com.nan.day31_okhttp.R;
 
 import java.io.IOException;
 
+/**
+ * OkHttp源码架构基本实现
+ */
 public class Main2Activity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";

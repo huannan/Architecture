@@ -16,7 +16,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".simple1.Main1Activity"></activity>
         <activity android:name=".simple2.Main2Activity"></activity>
-        <activity android:name=".simple3.Main3Activity">
+        <activity android:name=".simple3.Main3Activity"></activity>
+        <activity android:name=".simple4.Main4Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

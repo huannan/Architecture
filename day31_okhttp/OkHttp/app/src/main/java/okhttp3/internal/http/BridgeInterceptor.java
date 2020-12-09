@@ -56,6 +56,7 @@ public final class BridgeInterceptor implements Interceptor {
         requestBuilder.header("Content-Type", contentType.toString());
       }
 
+      // 写入contentLength
       long contentLength = body.contentLength();
       if (contentLength != -1) {
         requestBuilder.header("Content-Length", Long.toString(contentLength));

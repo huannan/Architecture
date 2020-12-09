@@ -287,3 +287,22 @@ RealConnection、ConnectionPool、StreamAllocation
 RealConnection: 建立连接的一个对象的封装
 ConnectionPool：保存了连接
 StreamAllocation: 找一些连接，做一下封装
+
+### OkHttp文件上传进度监听
+
+解决问题：
+
+    解决问题的速度比较慢，很多时间花在了解决问题上（耗时间）
+    解决问题的速度比较快，学习（耗时间）
+    找到因，打一个比方
+
+文件上传进度监听：
+
+    从源码的角度去解决（本质），用，扩展，出了问题
+    request.body().writeTo(bufferedRequestBody);// 往服务器写数据
+    MultipartBody.writeTo() 方法去写数据 ，怎么做监听？思路，contentLength , 还需要知道写了多少
+
+原理：
+
+    文件上传的具体一些细节（源码：BridgeInterceptor和CallServerInterceptor）
+    静态代理的设计模式
