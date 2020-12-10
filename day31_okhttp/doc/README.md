@@ -234,7 +234,9 @@ Context-Type: (文件的type) 
 
 拦截器作用：
 
-getResponseWithInterceptorChain() 请求Request -> Response
+1. getResponseWithInterceptorChain() 请求Request -> Response
+2. 每个拦截器只做与自己相关的逻辑
+3. 拦截器可以很方便地实现异常、307重试、缓存等逻辑
 
 ```java
   Response getResponseWithInterceptorChain() throws IOException {
@@ -282,11 +284,11 @@ findHealthyConnection() 找一个连接，首先判断有没有健康的，没�
 向服务器写数据和从服务器读取数据
 写头部信息，写body表单信息等等
 
-6.连接三个核心类（连接复用）
-RealConnection、ConnectionPool、StreamAllocation
+6.连接三个核心类（连接复用）: RealConnection、ConnectionPool、StreamAllocation
+
 RealConnection: 建立连接的一个对象的封装
-ConnectionPool：保存了连接
-StreamAllocation: 找一些连接，做一下封装
+ConnectionPool：保存了连接、定期清理
+StreamAllocation: 寻找连接，做一些封装
 
 ### OkHttp文件上传进度监听
 

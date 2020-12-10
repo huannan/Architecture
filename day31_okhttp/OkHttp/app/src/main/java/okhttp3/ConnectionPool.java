@@ -54,6 +54,7 @@ public final class ConnectionPool {
   /** The maximum number of idle connections for each address. */
   private final int maxIdleConnections;
   private final long keepAliveDurationNs;
+  // 清理连接池
   private final Runnable cleanupRunnable = new Runnable() {
     @Override public void run() {
       while (true) {
@@ -223,6 +224,7 @@ public final class ConnectionPool {
         }
       }
 
+      // 死了的就移除掉
       if (longestIdleDurationNs >= this.keepAliveDurationNs
           || idleConnectionCount > this.maxIdleConnections) {
         // We've found a connection to evict. Remove it from the list, then close it below (outside

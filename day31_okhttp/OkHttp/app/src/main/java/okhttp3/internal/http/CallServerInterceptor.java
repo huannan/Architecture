@@ -47,6 +47,7 @@ public final class CallServerInterceptor implements Interceptor {
     long sentRequestMillis = System.currentTimeMillis();
 
     realChain.eventListener().requestHeadersStart(realChain.call());
+    // 写请求头
     httpCodec.writeRequestHeaders(request);
     realChain.eventListener().requestHeadersEnd(realChain.call(), request);
 
@@ -70,7 +71,7 @@ public final class CallServerInterceptor implements Interceptor {
             new CountingSink(httpCodec.createRequestBody(request, contentLength));
         BufferedSink bufferedRequestBody = Okio.buffer(requestBodyOut);
 
-        // 这里将RequestBody写出去
+        // 这里将RequestBody写出去：包括表单数据、文件等
         request.body().writeTo(bufferedRequestBody);
         bufferedRequestBody.close();
         realChain.eventListener()
@@ -90,6 +91,7 @@ public final class CallServerInterceptor implements Interceptor {
       responseBuilder = httpCodec.readResponseHeaders(false);
     }
 
+    // 返回一个Response
     Response response = responseBuilder
         .request(request)
         .handshake(streamAllocation.connection().handshake())
@@ -117,11 +119,13 @@ public final class CallServerInterceptor implements Interceptor {
       streamAllocation.noNewStreams();
     }
 
+    // 服务器没有返回实体内容，抛出协议异常
     if ((code == 204 || code == 205) && response.body().contentLength() > 0) {
       throw new ProtocolException(
           "HTTP " + code + " had non-zero Content-Length: " + response.body().contentLength());
     }
 
+    // 返回
     return response;
   }
 

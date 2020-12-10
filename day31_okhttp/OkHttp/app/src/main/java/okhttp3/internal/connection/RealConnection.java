@@ -81,17 +81,24 @@ public final class RealConnection extends Http2Connection.Listener implements Co
   // The fields below are initialized by connect() and never reassigned.
 
   /** The low-level TCP socket. */
+  // 底层的TCP Socket
   private Socket rawSocket;
 
   /**
    * The application layer socket. Either an {@link SSLSocket} layered over {@link #rawSocket}, or
    * {@link #rawSocket} itself if this connection does not use SSL.
    */
+  // 应用层Socket
   private Socket socket;
+  // 通过这个对象握手
   private Handshake handshake;
+  // 协议
   private Protocol protocol;
+  // HTTP2相关
   private Http2Connection http2Connection;
+  // 输入流
   private BufferedSource source;
+  // 输出流
   private BufferedSink sink;
 
   // The fields below track connection state and are guarded by connectionPool.

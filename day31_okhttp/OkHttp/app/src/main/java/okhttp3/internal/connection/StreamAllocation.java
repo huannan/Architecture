@@ -186,6 +186,7 @@ public final class StreamAllocation {
 
       if (result == null) {
         // Attempt to get a connection from the pool.
+        // 尝试去找一个连接
         Internal.instance.get(connectionPool, address, this, null);
         if (connection != null) {
           foundPooledConnection = true;
@@ -203,13 +204,14 @@ public final class StreamAllocation {
     if (foundPooledConnection) {
       eventListener.connectionAcquired(call, result);
     }
-    // 返回
+    // 找到返回
     if (result != null) {
       // If we found an already-allocated or pooled connection, we're done.
       return result;
     }
 
     // If we need a route selection, make one. This is a blocking operation.
+    // 路由里面也找一遍
     boolean newRouteSelection = false;
     if (selectedRoute == null && (routeSelection == null || !routeSelection.hasNext())) {
       newRouteSelection = true;
@@ -228,6 +230,7 @@ public final class StreamAllocation {
           Internal.instance.get(connectionPool, address, this, route);
           if (connection != null) {
             foundPooledConnection = true;
+            // 从路由里面找到连接
             result = connection;
             this.route = route;
             break;
@@ -267,6 +270,7 @@ public final class StreamAllocation {
       reportedAcquired = true;
 
       // Pool the connection.
+      // 保存这个连接
       Internal.instance.put(connectionPool, result);
 
       // If another multiplexed connection to the same address was created concurrently, then
