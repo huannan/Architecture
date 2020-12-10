@@ -1,3 +1,4 @@
+include ':day32_rxjava'
 include ':day31_okhttp'
 include ':day30_eventbus'
 include ':day29_pattern_interpreter'
