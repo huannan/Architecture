@@ -318,6 +318,15 @@ StreamAllocation: 寻找连接，做一些封装
 1. 熟悉HTTP协议和CacheInterceptor源码
 2. 熟悉拦截器的工作流程
 
+核心源码:
+
+```java
+if (!responseCaching.noCache() && ageMillis + minFreshMillis < freshMillis + maxStaleMillis) {
+  // 缓存过期策略，noCache() true , ageMillis + minFreshMillis < freshMillis + maxStaleMillis
+  return new CacheStrategy(null, builder.build());
+}
+```
+
 ### 文件下载
 
 核心原理：
