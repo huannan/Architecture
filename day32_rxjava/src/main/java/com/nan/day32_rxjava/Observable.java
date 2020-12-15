@@ -10,6 +10,14 @@ public abstract class Observable<T> implements ObservableSource<T> {
         return new ObservableMap<>(this, function);
     }
 
+    public Observable<T> subscribeOn(Scheduler scheduler) {
+        return new ObservableSubscribeOn<T>(this, scheduler);
+    }
+
+    public Observable<T> observerOn(Scheduler scheduler) {
+        return new ObservableObserverOn<>(this,scheduler);
+    }
+
     @Override
     public void subscribe(Observer<T> observer) {
         subscribeActual(observer);

@@ -18,12 +18,23 @@ public class TestActivity extends AppCompatActivity {
                 .map(new Function<String, Integer>() {      // ObservableMap  上游source -> ObservableJust   下游new MapObserver(observer)
                     @Override
                     public Integer apply(String s) {
+                        System.out.println("map1 thread=" + Thread.currentThread().getName());
                         return Integer.parseInt(s);
                     }
                 })
+                .map(new Function<Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer) {
+                        System.out.println("map2 thread=" + Thread.currentThread().getName());
+                        return integer + 1;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observerOn(Schedulers.mainThread())
                 .subscribe(new Consumer<Integer>() {
                     @Override
                     public void accept(Integer integer) {
+                        System.out.println("onNext thread=" + Thread.currentThread().getName());
                         System.out.println("onNext: " + integer);
                     }
                 });
