@@ -10,7 +10,7 @@ public class ObservableJust<T> extends Observable<T> {
 
     @Override
     protected void subscribeActual(Observer<T> observer) {
-        // ScalarDisposable是Observer代理,方便扩展
+        // ScalarDisposable是Observer静态代理,方便扩展
         ScalarDisposable<T> sd = new ScalarDisposable<>(observer, item);
         observer.onSubscribe();
         sd.run();

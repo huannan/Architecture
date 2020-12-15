@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testRxJava() {
-        // 好处？可读性比较高，一条链子下来的（可读性高），扩展性，维护性，等等
+        // 好处?可读性比较高，一条链子下来的（可读性高），扩展性，维护性，等等
         // 学习成本要高，思想难以转换（事件流）
-        // 怎么办到的，这个框架怎么写？可能会涉及到哪些内容
+        // 怎么办到的，这个框架怎么写?可能会涉及到哪些内容
         // Observable
         Observable.just("http://img.taopic.com/uploads/allimg/130331/240460-13033106243430.jpg")
                 .map(new Function<String, Bitmap>() { // 事件变换
@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
                         return bitmap;
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())                   // 让之前的执行在子线程中
+                .observeOn(AndroidSchedulers.mainThread())      // 让之后的执行在主线程中
                 .subscribe(new Observer<Bitmap>() {
                     @Override
                     public void onSubscribe(Disposable d) {

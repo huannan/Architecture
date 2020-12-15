@@ -1,10 +1,21 @@
 package com.nan.day32_rxjava;
 
-public class Test {
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-    public static void main(String[] args) {
-        Observable.just("1")
-                .map(new Function<String, Integer>() {
+public class TestActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        testRxJava();
+    }
+
+    private void testRxJava() {
+        Observable
+                .just("1")                                  // ObservableJust 上游       -> 无               下游new ScalarDisposable(MapObserver)
+                .map(new Function<String, Integer>() {      // ObservableMap  上游source -> ObservableJust   下游new MapObserver(observer)
                     @Override
                     public Integer apply(String s) {
                         return Integer.parseInt(s);

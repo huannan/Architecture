@@ -2,10 +2,10 @@ package com.nan.day32_rxjava;
 
 public class ObservableMap<T, U> extends Observable<U> {
 
-    final Observable<T> source;
+    final ObservableSource<T> source;
     final Function<T, U> function;
 
-    public ObservableMap(Observable<T> source, Function<T, U> function) {
+    public ObservableMap(ObservableSource<T> source, Function<T, U> function) {
         this.source = source;
         this.function = function;
     }
