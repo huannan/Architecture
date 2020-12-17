@@ -1,4 +1,4 @@
-package com.nan.day32_rxjava;
+package com.nan.day32_rxjava.rxjava;
 
 public class ObservableSubscribeOn<T> extends Observable<T> {
 

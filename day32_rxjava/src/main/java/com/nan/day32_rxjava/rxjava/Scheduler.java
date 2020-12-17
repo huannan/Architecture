@@ -1,4 +1,4 @@
-package com.nan.day32_rxjava;
+package com.nan.day32_rxjava.rxjava;
 
 import android.os.Handler;
 import android.os.Message;

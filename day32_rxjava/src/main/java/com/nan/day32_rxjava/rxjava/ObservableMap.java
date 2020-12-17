@@ -1,4 +1,4 @@
-package com.nan.day32_rxjava;
+package com.nan.day32_rxjava.rxjava;
 
 public class ObservableMap<T, U> extends Observable<U> {
 

@@ -1,4 +1,4 @@
-package com.nan.day32_rxjava.sample;
+package com.nan.day32_rxjava.sample1;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,7 +33,7 @@ import io.reactivex.schedulers.Schedulers;
  * 2.加水印
  * 3.切换到主线程显示图片
  */
-public class MainActivity extends AppCompatActivity {
+public class Main1Activity extends AppCompatActivity {
 
     private ImageView mImage;
     private Handler handler = new Handler(Looper.getMainLooper()) {
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main1);
         mImage = (ImageView) findViewById(R.id.image);
 
         // testNormal();
