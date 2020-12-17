@@ -108,3 +108,18 @@ public boolean add(E e) {
     }
 }
 ```
+### RxJava实际使用场景
+
+1. OkHttp + RxJava + Rerofit
+2. RxBus + RxRelay
+3. RxAndroid / RxBinding
+4. RxKotlin
+5. RxPermission
+6. 第三方支付，第三方登录等
+
+### RxPermission源码分析
+
+RxPermissions构建的时候创建了一个 RxPermissionsFragment 对象，然后加到了我们 Activity 中
+
+流程 Actvity 添加了一个轻量级的 Fragment ，然后调用 Fragment 的方法去请求权限，我们的回调实在 Fragment 中的 onRequestPermissionsResult
+-> 然后处理结果进行返回，但是并没有对Fragment进行移除和销毁，所以一般情况下一个Activity尽量只 new 一个 RxPermission 对象
