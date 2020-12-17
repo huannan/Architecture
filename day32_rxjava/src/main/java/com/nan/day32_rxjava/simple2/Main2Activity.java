@@ -1,5 +1,6 @@
 package com.nan.day32_rxjava.simple2;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.nan.day32_rxjava.R;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -96,6 +98,17 @@ public class Main2Activity extends AppCompatActivity {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         log("timer");
+                    }
+                });
+
+        // RxJava实际使用场景-RxPermissions
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions
+                .request(Manifest.permission.CAMERA)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean isSuccess) throws Exception {
+
                     }
                 });
     }

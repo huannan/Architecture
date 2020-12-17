@@ -5,10 +5,17 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn_login"
-        android:onClick="login"
+        android:id="@+id/btn_login_success"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="登录" />
+        android:onClick="loginSuccess"
+        android:text="登录成功" />
+
+    <Button
+        android:id="@+id/btn_login_failed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="loginFailed"
+        android:text="登录失败" />
 
 </LinearLayout>

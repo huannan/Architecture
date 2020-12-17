@@ -13,16 +13,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".rxjava.TestActivity">
-        </activity>
+        <activity android:name=".rxjava.TestActivity"></activity>
         <activity android:name=".sample1.Main1Activity"></activity>
-        <activity android:name=".simple2.Main2Activity">
+        <activity android:name=".simple2.Main2Activity"></activity>
+        <activity android:name=".simple3.Main3Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".simple3.loginsdk.LoginActivity"/>
+        <activity android:name=".simple3.rxlogin.RxLoginActivity"/>
     </application>
 
 </manifest>
