@@ -1,0 +1,8 @@
+# day33
+
+### Retrofit常见问题
+
+1. 打印
+    HttpLoggingInterceptor
+2. 数据格式不一致? 成功 data 是个对象，不成功 data 是个 String
+    泛型+Object，封装一个HttpCallback，判断状态码，成功的时候才去解析

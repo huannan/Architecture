@@ -1,3 +1,4 @@
+include ':day33_retrofit'
 include ':day32_rxjava'
 include ':day31_okhttp'
 include ':day30_eventbus'
