@@ -1,5 +1,9 @@
 # day33
 
+### Retrofit
+
+网络封装框架（解耦），是对 OkHttp 的封装。
+
 ### Retrofit常见问题
 
 1. 打印
