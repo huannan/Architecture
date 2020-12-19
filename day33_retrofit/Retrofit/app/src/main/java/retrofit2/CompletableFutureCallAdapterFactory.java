@@ -24,6 +24,7 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 @IgnoreJRERequirement // Only added when CompletableFuture is available (Java 8+ / Android API 24+).
 final class CompletableFutureCallAdapterFactory extends CallAdapter.Factory {
+  // 单例
   static final CallAdapter.Factory INSTANCE = new CompletableFutureCallAdapterFactory();
 
   @Override

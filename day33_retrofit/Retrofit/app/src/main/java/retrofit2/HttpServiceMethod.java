@@ -162,6 +162,8 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
     @Override
     protected ReturnT adapt(Call<ResponseT> call, Object[] args) {
+      // 如果不采用 RxJava 直接返回 okHttpCall，为什么还调用一次，我们 Retrofit 返回的是 Call 但是一旦采用 RxJava 我想要的就必须是 Observable，这两个对象完全不一样
+      // 所以 Adapter 设计模式 在这里体现是，把 Call 适配成 Observable
       return callAdapter.adapt(call);
     }
   }

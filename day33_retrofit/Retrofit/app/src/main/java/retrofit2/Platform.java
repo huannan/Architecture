@@ -15,21 +15,24 @@
  */
 package retrofit2;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.Executor;
+
 import javax.annotation.Nullable;
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 class Platform {
   private static final Platform PLATFORM = findPlatform();
@@ -38,6 +41,9 @@ class Platform {
     return PLATFORM;
   }
 
+  /**
+   * 简单工厂-创建Platform
+   */
   private static Platform findPlatform() {
     switch (System.getProperty("java.vm.name")) {
       case "Dalvik":

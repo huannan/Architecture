@@ -5,6 +5,7 @@ import android.util.Log;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
@@ -32,6 +33,7 @@ public class RetrofitClient {
                 .baseUrl("http://172.16.47.80:8080/TestServer/")
                 // 添加解析转换工厂,Gson 解析，Xml解析，等等
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 // 添加 OkHttpClient,不添加默认就是 光杆 OkHttpClient
                 .client(okHttpClient)
                 .build();

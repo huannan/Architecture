@@ -24,6 +24,11 @@ import javax.annotation.Nullable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
+/**
+ * 模板设计模式,不同的对象调用的不同的 apply
+ * 制定通用的流程，具体的算法细节由不同的子类去实现，确定Retrofit请求流程 ，解析方法参数注解，但是其具体的各个参数细节由子类去实现
+ * 还可以衍生另一种设计模式叫做策略，不同的参数注解采用不同的添加策略
+ */
 abstract class ParameterHandler<T> {
   abstract void apply(RequestBuilder builder, @Nullable T value) throws IOException;
 

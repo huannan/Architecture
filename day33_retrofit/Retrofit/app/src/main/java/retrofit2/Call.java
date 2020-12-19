@@ -31,6 +31,8 @@ import okio.Timeout;
  * working as designed.
  *
  * @param <T> Successful response body type.
+ *
+ * 原型设计模式
  */
 public interface Call<T> extends Cloneable {
   /**

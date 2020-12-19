@@ -64,6 +64,7 @@ import retrofit2.http.Url;
  * @author Jake Wharton (jw@squareup.com)
  */
 public final class Retrofit {
+  // 享元设计模式
   private final Map<Method, ServiceMethod<?>> serviceMethodCache = new ConcurrentHashMap<>();
 
   final okhttp3.Call.Factory callFactory;
@@ -135,6 +136,10 @@ public final class Retrofit {
    *   Call&lt;List&lt;Item&gt;&gt; categoryList(@Path("cat") String a, @Query("page") int b);
    * }
    * </pre>
+   * 动态代理
+   * 解耦:传入接口即可,没有任何实现代码
+   * 用作解耦，体现的形式有很多，插件化绕过 AndroidManifest.xml 主要是用作 Hook 拦截方法，MVP 主要用作 AOP 切面，总之采用的原理其实还是方法的拦截。
+   * 如果有一天要换新的网络引擎,可以很方便地更换
    */
   @SuppressWarnings("unchecked") // Single-interface proxy creation guarded by parameter safety.
   public <T> T create(final Class<T> service) {
@@ -419,6 +424,7 @@ public final class Retrofit {
   }
 
   /**
+   * Builder设计模式
    * Build a new {@link Retrofit}.
    *
    * <p>Calling {@link #baseUrl} is required before calling {@link #build()}. All other methods are
