@@ -13,6 +13,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".simple1.Main1Activity">
+        </activity>
+        <activity android:name=".retrofit.test.Main2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
