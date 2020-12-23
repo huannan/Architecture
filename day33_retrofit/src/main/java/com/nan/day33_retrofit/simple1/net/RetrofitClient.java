@@ -2,6 +2,18 @@ package com.nan.day33_retrofit.simple1.net;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.nan.day33_retrofit.simple1.bean.Result;
+import com.nan.day33_retrofit.simple1.net.errorhandle.ErrorHandle;
+
+import java.lang.reflect.ParameterizedType;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -15,7 +27,7 @@ public class RetrofitClient {
     static {
         OkHttpClient okHttpClient = new OkHttpClient
                 .Builder()
-                .addInterceptor(new  HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                     @Override
                     public void log(String message) {
                         Log.e("TAG", message);
@@ -44,5 +56,31 @@ public class RetrofitClient {
 
     public static ServiceApi getServiceApi() {
         return SERVICE_API;
+    }
+
+    public static <T> ObservableTransformer<Result<T>, T> getRetryTransformer() {
+        return new ObservableTransformer<Result<T>, T>() {
+            @Override
+            public ObservableSource<T> apply(Observable<Result<T>> upstream) {
+                return upstream
+                        .map(new Function<Result<T>, T>() {
+                            @Override
+                            public T apply(Result<T> result) throws Exception {
+                                if (result.isOk()) {
+                                    // 解析,获取类上面的泛型
+                                    Class<T> dataClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+                                    Gson gson = new Gson();
+                                    T data = gson.fromJson(result.data.toString(), dataClass);
+                                    return data;
+                                } else {
+                                    throw new ErrorHandle.ServiceError(result.getCode(), result.getMsg());
+                                }
+                            }
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
     }
 }
