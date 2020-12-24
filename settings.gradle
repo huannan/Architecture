@@ -1,3 +1,4 @@
+include ':day34_mvp'
 include ':day33_retrofit'
 include ':day32_rxjava'
 include ':day31_okhttp'
