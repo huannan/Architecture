@@ -16,6 +16,15 @@
 
         </activity>
         <activity android:name=".simple3.UserInfoActivity">
+
+        </activity>
+        <activity android:name=".simple4.UserInfoActivity">
+
+        </activity>
+        <activity android:name=".simple5.UserInfoActivity">
+
+        </activity>
+        <activity android:name=".simple6.UserInfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

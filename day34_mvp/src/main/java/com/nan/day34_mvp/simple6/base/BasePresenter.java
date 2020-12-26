@@ -1,16 +1,19 @@
-package com.nan.day34_mvp.simple4.base;
+package com.nan.day34_mvp.simple6.base;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 
-public class BasePresenter<V extends BaseView> {
+public class BasePresenter<V extends BaseView, M extends BaseModel> {
 
     // 目前两个两个公用方法 ，传递的时候 会有不同的 View ，怎么办？-> 用泛型
     // View有一个特点,都是接口
     private WeakReference<V> mView;
     private V mViewProxy;
+    private M mModel;
 
     @SuppressWarnings("unchecked")
     public void attach(V view) {
@@ -20,6 +23,17 @@ public class BasePresenter<V extends BaseView> {
          * 思考:虽然已经统一处理了判空,但是感觉还是没有把泄漏问题解决,继续把mView改成弱引用
          */
         mViewProxy = (V) Proxy.newProxyInstance(view.getClass().getClassLoader(), view.getClass().getInterfaces(), new ViewInvocationHandler<>(view));
+
+        // 动态创建Model,不需要使用者手动创建
+        // 创建我们的 Model ，动态创建？ 获取 Class 通过反射 （Activity实例创建的？class 反射创建的，布局的 View 对象怎么创建的？反射）
+        // 获取 Class 对象
+        try {
+            // 最好要判断一下类型
+            Type[] params = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments();
+            mModel = (M) ((Class<?>) params[1]).newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void detach() {
@@ -34,6 +48,10 @@ public class BasePresenter<V extends BaseView> {
      */
     public V getView() {
         return mViewProxy;
+    }
+
+    public M getModel() {
+        return mModel;
     }
 
     private static final class ViewInvocationHandler<V> implements InvocationHandler {

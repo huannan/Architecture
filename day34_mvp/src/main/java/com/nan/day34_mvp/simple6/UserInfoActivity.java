@@ -1,24 +1,27 @@
-package com.nan.day34_mvp.simple4;
+package com.nan.day34_mvp.simple6;
 
 import android.widget.TextView;
 
 import com.nan.day34_mvp.R;
 import com.nan.day34_mvp.network.UserInfo;
-import com.nan.day34_mvp.simple4.base.BaseMvpActivity;
+import com.nan.day34_mvp.simple6.base.BaseMvpActivity;
+import com.nan.day34_mvp.simple6.inject.InjectPresenter;
 
 /**
  * MVP的最基本实现
- * 优化判空代码
+ * <p>
+ * 抽离Proxy,适配不同的UI组件
  */
 public class UserInfoActivity extends BaseMvpActivity<UserInfoPresenter> implements UserInfoView {
 
+    @InjectPresenter
+    private UserInfoPresenter mPresenter;
     private TextView mTvUserInfo;
 
     @Override
     protected UserInfoPresenter createPresenter() {
         return new UserInfoPresenter();
     }
-
 
     @Override
     protected void setContentView() {
@@ -33,7 +36,7 @@ public class UserInfoActivity extends BaseMvpActivity<UserInfoPresenter> impleme
 
     @Override
     protected void initData() {
-        getPresenter().getUsers("123456");
+        mPresenter.getUsers("123456");
     }
 
 

@@ -8,6 +8,7 @@ import com.nan.day34_mvp.simple3.base.BaseMvpActivity;
 
 /**
  * MVP的最基本实现
+ * 模板抽取基类
  */
 public class UserInfoActivity extends BaseMvpActivity<UserInfoPresenter> implements UserInfoView {
 
