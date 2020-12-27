@@ -6,6 +6,8 @@ import com.nan.day34_mvp.simple6.base.BaseView;
 import com.nan.day34_mvp.simple6.inject.InjectPresenter;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,9 @@ public class MvpProxyImpl<V extends BaseView> implements IMvpProxy {
                     field.setAccessible(true);
                     field.set(mView, basePresenter);
                     mPresenters.add(basePresenter);
+
+                    // 检测我们的 View 层是否实现了 BasePresenter 的View接口
+                    checkView(basePresenter);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -63,5 +68,28 @@ public class MvpProxyImpl<V extends BaseView> implements IMvpProxy {
             presenter.detach();
         }
         mView = null;
+    }
+
+    /**
+     * 检测我们的 View 层是否实现了 BasePresenter 的View接口
+     * @param basePresenter
+     */
+    private void checkView(BasePresenter basePresenter) {
+        // 1. Presenter 的 View 接口
+        Type[] params = ((ParameterizedType) basePresenter.getClass().getGenericSuperclass()).getActualTypeArguments();
+        Class viewClazz = ((Class)params[0]);
+
+        // 2. 要拿到 View 层的所有接口
+        Class[] ViewClasses = mView.getClass().getInterfaces();
+        // 3. View层没有实现就抛异常
+        boolean isImplementsView = false;
+        for (Class viewClass : ViewClasses) {
+            if(viewClass.isAssignableFrom(viewClazz)){
+                isImplementsView = true;
+            }
+        }
+        if(!isImplementsView){
+            throw new RuntimeException(mView.getClass().getSimpleName()+" must implements "+viewClazz.getName());
+        }
     }
 }
