@@ -48,3 +48,6 @@ animateValue() 是一个核心方法
 https://github.com/JakeWharton/timber
 
 怎么使用？
+
+https://www.jianshu.com/p/2ec6a8089928
+https://www.jianshu.com/p/d4fb5d0fa26e

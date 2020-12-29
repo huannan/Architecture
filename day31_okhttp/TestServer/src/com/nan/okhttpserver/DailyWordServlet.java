@@ -8,18 +8,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/translate")
-public class TranslateServlet extends BaseJsonServlet {
+@WebServlet("/dailyword")
+public class DailyWordServlet extends BaseJsonServlet {
     @Override
     protected ResponseEntity onHandle(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String input = req.getParameter("input");
-        String translateResult = input + " -> " + "Good mood every day";
-
         ResponseEntity responseEntity = new ResponseEntity();
         responseEntity.code = ResponseCode.OK;
-        responseEntity.msg = "Good mood every day";
-        responseEntity.data = translateResult;
-
+        responseEntity.msg = "成功";
+        responseEntity.data = "每天都是好心情";
         return responseEntity;
     }
 }
