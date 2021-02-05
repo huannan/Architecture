@@ -32,6 +32,16 @@ APT(Annotation Processing Tool)即注解处理器（通常也叫做编译时注�
 
 ### 1 什么是注解
 
+一般，我们评价某人会说，这是一个好人、坏人、男神、女神、大神、单身狗等等，这是我们人为贴得标签，这些标签有助于我们自己或者其他人去获取被评价的人的基本信息。
+
+![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e856ed9fbf644e85a438bd09c17512cb~tplv-k3u1fbpfcp-watermark.image)
+
+而在软件开发中，我们也可以给某些类，某些字段贴上作用类似的标签，这种标签的名字就叫做注解，只不过这种标签是给代码看的。
+
+标签只对特定的人起作用，比如小张被人贴了一个小气鬼的标签，所以小红认为小张是一个小气鬼，但是小张本人不会因为这个标签而改变自己变得不是小张，也许本质上小张是个大方的人。
+
+所以，注解本身也不会影响代码本身的运行，它只会针对特定的代码起到一定的用处，用来处理注解的代码被称作 APT（Annotation Processing Tool）。
+
 #### 1.1 注解示例
 
 注解你一定不会陌生，这就是我们最常见的注解：
@@ -40,6 +50,18 @@ APT(Annotation Processing Tool)即注解处理器（通常也叫做编译时注�
 @Override
 protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+}
+```
+
+```java
+@IntDef({
+        AppBootType.COLD_BOOT,
+        AppBootType.HOT_BOOT,
+})
+@Retention(RetentionPolicy.SOURCE)
+public @interface AppBootType {
+    int COLD_BOOT = 0;
+    int HOT_BOOT = 1;
 }
 ```
 
@@ -614,4 +636,5 @@ APT应用场景
 参考文章
 
 [Android编译时注解框架系列](https://lizhaoxuan.github.io/2016/07/17/apt-wathapt/)
+[轻松学，听说你还没有搞懂 Dagger2](https://frank909.blog.csdn.net/article/details/75578459)
 [参考源码地址](https://github.com/huannan/Architecture)
