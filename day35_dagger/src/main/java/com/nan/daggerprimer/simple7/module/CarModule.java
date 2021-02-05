@@ -1,10 +1,9 @@
-package com.nan.daggerprimer.simple7;
+package com.nan.daggerprimer.simple7.module;
 
-import com.nan.daggerprimer.simple5.Car;
+import com.nan.daggerprimer.simple7.Car;
 
 import dagger.Module;
 import dagger.Provides;
-import dagger.Reusable;
 
 @Module
 public class CarModule {

@@ -1,4 +1,4 @@
-package com.nan.daggerprimer.simple7;
+package com.nan.daggerprimer.simple8;
 
 import javax.inject.Inject;
 
