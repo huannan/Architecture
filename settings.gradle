@@ -41,3 +41,4 @@ include ':day03_uml'
 include ':day02_aop'
 include ':day01_principle'
 rootProject.name = "Architecture"
+include ':day37_glide'
